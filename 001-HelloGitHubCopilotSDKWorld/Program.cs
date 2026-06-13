@@ -4,6 +4,7 @@ using System.Text.Json;
 using System.Text.Unicode;
 
 // Copilot クライアントを初期化
+// GitHub Copilot CLI のデフォルトの認証情報を使う
 CopilotClient client = new();
 
 // Claude Sonnet 4.6 モデルを使用してセッションを作成
