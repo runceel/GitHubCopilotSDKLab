@@ -29,19 +29,19 @@ Console.WriteLine(JsonSerializer.Serialize(response, new JsonSerializerOptions
 実行結果
 {
   "data": {
-    "apiCallId": "msg_bdrk_01Rd92avxG7pyFVH9W7RHjjt",
+    "apiCallId": "msg_bdrk_0123456789abcdefghijklmnopqrst",
     "content": "やっほー！何かお手伝いできることはありますか？ \uD83D\uDE0A",
-    "interactionId": "ef608320-ccfa-45c8-bf7f-db915eb95574",
-    "messageId": "c706246d-f4ba-49e6-b4fb-6c0f347dbd4c",
+    "interactionId": "00000000-1111-2222-3333-444444444444",
+    "messageId": "55555555-6666-7777-8888-999999999999",
     "model": "claude-sonnet-4.6",
     "outputTokens": 26,
-    "requestId": "FB07:50BD6:9B623D:B857B2:6A2CF634",
-    "serviceRequestId": "19654136-1ae5-4d60-b8ed-a19119b78c54",
+    "requestId": "ABCD:12345:67890:ABCDE:01234567",
+    "serviceRequestId": "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
     "toolRequests": [],
     "turnId": "0"
   },
-  "id": "db0c5cfb-40fa-46b5-bb55-c35eead5bb06",
-  "parentId": "d3ecd9cd-1eb6-4f15-a9d2-7356f9ec68fe",
-  "timestamp": "2026-06-13T06:18:33.537+00:00"
+  "id": "ffffffff-0000-1111-2222-333333333333",
+  "parentId": "99999999-8888-7777-6666-555555555555",
+  "timestamp": "2026-01-01T00:00:00.000+00:00"
 }
 */
