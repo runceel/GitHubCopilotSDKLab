@@ -60,7 +60,7 @@ Console.WriteLine(JsonSerializer.Serialize(response, new JsonSerializerOptions
     "encryptedContent": "gAAAAABmExample_...ABCDE==",
     "interactionId": "00000000-1111-2222-3333-444444444444",
     "messageId": "55555555-6666-7777-8888-999999999999",
-    "model": "gpt-5.4-1",
+    "model": "gpt-5.4",
     "outputTokens": 38,
     "phase": "final_answer",
     "reasoningOpaque": "rs_0123456789abcdef0123456789abcdef0123456789abcdef",
