@@ -1,8 +1,9 @@
 ﻿using GitHub.Copilot;
 using GitHub.Copilot.Rpc;
 
-CopilotClient client = new();
 
+// Copilot に作業してもらう一時ディレクトリです。
+// 毎回同じ状態から実行できるように、既存ディレクトリがあれば削除して作り直します。
 const string WorkingDirectory = @"d:\temp\copilot-sdk-lab";
 if (Directory.Exists(WorkingDirectory))
 {
@@ -11,17 +12,25 @@ if (Directory.Exists(WorkingDirectory))
 }
 Directory.CreateDirectory(WorkingDirectory);
 
+// GitHub Copilot SDK を操作するためのクライアントを作成します。
+CopilotClient client = new();
+
+// Copilot のセッションを作成します。
+// WorkingDirectory に対して、指定したモデルがファイル作成やコマンド実行を行います。
 var session = await client.CreateSessionAsync(
     new()
     {
         WorkingDirectory = WorkingDirectory,
         Model = "claude-sonnet-4.6",
+        // Copilot がシェル実行やファイル読み書きを行う前に呼ばれる権限確認ハンドラーです。
+        // このサンプルでは要求内容をコンソールへ表示したうえで、すべて一度だけ許可しています。
         OnPermissionRequest = async (request, invocation) =>
         {
             bool isApproved = false;
             switch (request)
             {
                 case PermissionRequestShell permissionRequestShell:
+                    // dotnet new や dotnet run など、Copilot が実行しようとしているシェルコマンドを確認します。
                     foreach (var command in permissionRequestShell.Commands)
                     {
                         Console.WriteLine($"Permission requested for shell command: {command.Identifier}, readOnly: {command.ReadOnly}");
@@ -29,30 +38,36 @@ var session = await client.CreateSessionAsync(
                     isApproved = true;
                     break;
                 case PermissionRequestWrite permissionRequestWrite:
+                    // ファイルへの書き込み要求では、対象ファイル名と差分を確認できます。
                     Console.WriteLine($"Permission requested for write access to file: {permissionRequestWrite.FileName}, Diff: {permissionRequestWrite.Diff}");
                     isApproved = true;
                     break;
                 case PermissionRequestRead permissionRequestRead:
+                    // ファイルやディレクトリの読み取り要求では、対象パスを確認できます。
                     Console.WriteLine($"Permission requested for read access to file: {permissionRequestRead.Path}");
                     isApproved = true;
                     break;
             }
 
 #pragma warning disable GHCP001
+            // 今回の要求だけを許可します。継続的に許可したい場合は別の PermissionDecision を選びます。
             return isApproved ? PermissionDecision.ApproveOnce() : PermissionDecision.Reject();
 #pragma warning restore GHCP001
         }
     });
 
+// セッション中に発生したイベントを購読し、イベント種別と主要な内容をコンソールへ出力します。
 session.On<SessionEvent>(e =>
 {
     Console.Write(e.GetType());
     switch (e)
     {
         case ToolExecutionStartEvent toolExecutionStartEvent:
+            // ツール実行開始イベントでは、利用するツール名と引数を確認できます。
             Console.Write($": {toolExecutionStartEvent.Data.ToolName}, {toolExecutionStartEvent.Data.Arguments}");
             break;
         case AssistantMessageEvent assistantMessageEvent:
+            // Copilot からのメッセージ本文を表示します。
             Console.Write($": {assistantMessageEvent.Data.Content}");
             break;
     }
@@ -60,6 +75,7 @@ session.On<SessionEvent>(e =>
     Console.WriteLine();
 });
 
+// Copilot へ自然言語で作業を依頼し、完了するまで待機します。
 await session.SendAndWaitAsync(".NET SDK を使って「こんにちは GitHub Copilot SDK の世界へ!」 を表示するコンソールアプリを作って実行してから、書いたコードと実行結果を教えてください。");
 
 // 参考: PermissionRequest の派生型
