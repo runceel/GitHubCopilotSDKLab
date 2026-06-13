@@ -2,4 +2,5 @@
   <Project Path="001-HelloGitHubCopilotSDKWorld/001-HelloGitHubCopilotSDKWorld.csproj" />
   <Project Path="002-BYOKGitHubCopilotSDKApp/002-BYOKGitHubCopilotSDKApp.csproj" />
   <Project Path="003-GitHubCopilotSDKStreaming/003-GitHubCopilotSDKStreaming.csproj" />
+  <Project Path="004-GitHubCopilotSDKCreateProgram/004-GitHubCopilotSDKCreateProgram.csproj" />
 </Solution>
